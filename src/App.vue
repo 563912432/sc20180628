@@ -23,6 +23,35 @@ export default {
     'v-header': vheader,
     'v-footer': vfooter,
     pswp
+  },
+  created () {
+    // this.initQYear()
+    this.initLYear()
+  },
+  methods: {
+    initLYear () {
+      let yearl = localStorage.getItem('year')
+      if (this.$store.state.year === '' && yearl !== '') {
+        this.$store.commit('setYear', yearl)
+      }
+    },
+    initQYear () {
+      let params = this.getQueryString()
+      let year = (params['year'] ? params['year'] : '2017')
+      this.$store.commit('setYear', year)
+    },
+    getQueryString () {
+      let str = location.search
+      let theRequest = {}
+      if (str.indexOf('?') !== -1) {
+        str = str.substr(1)
+        let strs = str.split('&')
+        for (let i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+        }
+      }
+      return theRequest
+    }
   }
 }
 </script>
